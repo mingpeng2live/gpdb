@@ -68,3 +68,25 @@ Feature: Tests for gpcheckperf
      And   gpcheckperf should print "making gpcheckperf directory on all hosts ..." to stdout
      And   gpcheckperf should print "TEARDOWN" to stdout
 
+  @concourse_cluster
+   Scenario: gpcheckperf runs matrix test by passing single host should not throw exception
+     Given the database is running
+     And create a gpcheckperf input host file
+     When  the user runs "gpcheckperf -h cdw -r M -d /data/gpdata/ --duration=3m -v"
+     Then  gpcheckperf should return a return code of 0
+     And   gpcheckperf should print "--  NETPERF TEST" to stdout
+     And   gpcheckperf should print "single host only - abandon netperf test" to stdout
+     And   gpcheckperf should print "TEARDOWN" to stdout
+     And   gpcheckperf should not print "TypeError:" to stdout
+
+  @concourse_cluster
+   Scenario: gpcheckperf runs network test by passing single host should not throw exception
+     Given the database is running
+     And create a gpcheckperf input host file
+     When  the user runs "gpcheckperf -h cdw -r N -d /data/gpdata/ --duration=3m -v"
+     Then  gpcheckperf should return a return code of 0
+     And   gpcheckperf should print "--  NETPERF TEST" to stdout
+     And   gpcheckperf should print "single host only - abandon netperf test" to stdout
+     And   gpcheckperf should print "TEARDOWN" to stdout
+     And   gpcheckperf should not print "TypeError:" to stdout
+
